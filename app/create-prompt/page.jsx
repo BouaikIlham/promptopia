@@ -3,46 +3,49 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+
 import Form from "@/components/Form";
 
-const CreatePrmpot = () => {
-  const [submitting, setSubmitting] = useState(false);
-  const [post, setPost] = useState({
-    prompt: "",
-    tag: "",
-  });
+const CreatePrompt = () => {
+  const router = useRouter();
+  const { data: session } = useSession();
+
+  const [submitting, setIsSubmitting] = useState(false);
+  const [post, setPost] = useState({ prompt: "", tag: "" });
 
   const createPrompt = async (e) => {
-    e.preventDefault;
-    setSubmitting(true);
+    e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       const response = await fetch("/api/prompt/new", {
         method: "POST",
-        body: {
+        body: JSON.stringify({
           prompt: post.prompt,
-          userID: session?.user.id,
+          userId: session?.user.id,
           tag: post.tag,
-        },
+        }),
       });
+
       if (response.ok) {
-        Router.push("/");
+        router.push("/");
       }
     } catch (error) {
       console.log(error);
     } finally {
-      setSubmitting(false);
+      setIsSubmitting(false);
     }
   };
+
   return (
     <Form
-      type="Create"
+      type='Create'
       post={post}
       setPost={setPost}
-      submit={submitting}
-      handlesubmit={createPrompt}
+      submitting={submitting}
+      handleSubmit={createPrompt}
     />
   );
 };
 
-export default CreatePrmpot;
+export default CreatePrompt;
