@@ -30,6 +30,34 @@ const Form = ({ type, post, setPost, submit, handleSubmit }) => {
             }
           ></textarea>
         </label>
+        <label>
+          <span className="font-satoshi font-semibold text-base text-gray-700">
+            Tag {` `}
+            <span>(#product, #webdevelopment, #idea)</span>
+          </span>
+          <input
+            placeholder="#tag"
+            className="form_input"
+            value={post.tag}
+            onChange={(e) =>
+              setPost({
+                ...post,
+                tag: e.target.value,
+              })
+            }
+          ></input>
+        </label>
+        <div className="flex-end mx-3 mb-5 gap-4">
+            <Link href="/" className="text-gray-500">
+              Cancel
+            </Link>
+
+            <button type="submit"
+                    disabled="submit"
+                    className="px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white">
+              {submit? `${type}...` : type}
+            </button>
+        </div>
       </form>
     </section>
   );
