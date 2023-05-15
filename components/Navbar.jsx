@@ -8,7 +8,6 @@ const Navbar = () => {
   const {data: session} = useSession();
   const [toggleDropDown, setToggleDropDown] = useState(false);
   const [providers, setProviders] = useState(null);
-  console.log(session?.user)
   useEffect(() => {
     const setUpProviders = async () => {
       const response = await getProviders();
@@ -28,6 +27,7 @@ const Navbar = () => {
           height={30}
           className="object-contain"
         />
+        <p className='logo_text'>Promptopia</p>
       </Link>
       {/*  Desktop Navigation */}
       <div className="sm:flex hidden">
