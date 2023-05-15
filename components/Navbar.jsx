@@ -8,7 +8,7 @@ const Navbar = () => {
   const {data: session} = useSession();
   const [toggleDropDown, setToggleDropDown] = useState(false);
   const [providers, setProviders] = useState(null);
-
+  console.log(session?.user)
   useEffect(() => {
     const setUpProviders = async () => {
       const response = await getProviders();
@@ -43,7 +43,7 @@ const Navbar = () => {
 
             <Link href="/profile">
               <Image
-                src="/assets/images/logo.svg"
+                src={session?.user.image}
                 width={37}
                 height={37}
                 className="rounded-full"
@@ -76,7 +76,7 @@ const Navbar = () => {
         {session?.user ? (
           <div className="flex">
             <Image
-              src="/assets/images/logo.svg"
+              src={session?.user.image}
               width={37}
               height={37}
               className="rounded-full"
