@@ -1,12 +1,21 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import Image from 'next/image'
-import { useState, useEffect } from 'react'
-import {signIn, signOut} from "next-auth/react"
+import Link from "next/link";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { signIn, signOut, getProviders } from "next-auth/react";
 const Navbar = () => {
+  const isUserLoggedIn = true;
+  const [toggleDropDown, setToggleDropDown] = useState(false);
+  const [providers, setProviders] = useState(null);
 
-  const isUserLoggedIn = false
+  useEffect(() => {
+    const setProviders = async () => {
+      const response = await getProviders();
+      console.log(response);
+      setProviders(response);
+    };
+  }, []);
   return (
     <nav className="flex-between w-full mb-16 pt-3">
       <Link href="/" className="flex gap-2 flex-center">
@@ -26,9 +35,7 @@ const Navbar = () => {
               Create Post
             </Link>
 
-            <button type="button"
-                     onClick={signOut}
-                     className="outline_btn">
+            <button type="button" onClick={signOut} className="outline_btn">
               Sign Out
             </button>
 
@@ -42,14 +49,66 @@ const Navbar = () => {
               />
             </Link>
           </div>
-        ):
-        (
+        ) : (
+          <>
+            {providers &&
+              Object.values(providers).map((provider) => (
+                <button
+                  type="button"
+                  onClick={signIn(provider.id)}
+                  key={provider.name}
+                  className="black_btn"
+                >
+                  Sign In
+                </button>
+              ))}
+          </>
+        )}
+      </div>
+
+      {/* Mobile Navigation */}
+      <div className="sm:hidden flex relative">
+        {isUserLoggedIn ? (
+          <div className="flex">
+            <Image
+              src="/assets/images/logo.svg"
+              width={37}
+              height={37}
+              className="rounded-full"
+              alt="profile"
+              onClick={() => setToggleDropDown((prev) => !prev)}
+            />
+            {toggleDropDown && (
+              <div className="dropdown">
+                <Link
+                  href="/profile"
+                  className="dropdown_link"
+                  onClick={() => setToggleDropDown(false)}
+                >
+                  My profile
+                </Link>
+                <Link
+                  href="/"
+                  className="dropdown_link"
+                  onClick={() => setToggleDropDown(false)}
+                >
+                  Create prompt
+                </Link>
+                <button
+                  className="black_btn mt-5 w-full"
+                  onClick={() => setToggleDropDown(false)}
+                >
+                  Sign out
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
           <></>
-        )
-        }
+        )}
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
