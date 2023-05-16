@@ -1,8 +1,19 @@
 import React from 'react'
 
-const Profile = () => {
+const Profile = ({
+  data,
+  name,
+  desc,
+  handleEdite,
+  handleDelete
+}) => {
+  console.log(data)
   return (
-    <div>Profile</div>
+    <div>
+     {data.map((myPost) => (
+      <h1>{myPost.creator.username}</h1>
+     ))}
+    </div>
   )
 }
 
