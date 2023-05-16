@@ -5,16 +5,16 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 const MyProfile = () => {
   const {data: session} = useSession();
-
   const [myPosts, setMyPosts] = useState([]);
-  
-  const handleEdit = async () => {
-    console.log("handleEdit")
+  const router = useRouter();
+ 
 
+  const handleEdite =  (post) => {
+    router.push(`/update-prompt?id=${post.id}`)
   }
 
-  const handleDelete = async () => {
-    console.log("handleDelete")
+  const handleDelete = async (post) => {
+    
   }
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const MyProfile = () => {
       name="My"
       desc="Welcome to your personalized profile page"
       data={myPosts}
-      handleEdit={handleEdit}
+      handleEdite={handleEdite}
       handleDelete={handleDelete}
     />
   )
