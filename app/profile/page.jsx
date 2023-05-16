@@ -9,12 +9,11 @@ const MyProfile = () => {
   const router = useRouter();
  
 
-  const handleEdite =  (post) => {
-    router.push(`/update-prompt?id=${post.id}`)
+  const handleEdit =  (post) => {
+    router.push(`/update-prompt?id=${post._id}`)
   }
 
   const handleDelete = async (post) => {
-    
   }
 
   useEffect(() => {
@@ -33,7 +32,7 @@ const MyProfile = () => {
       name="My"
       desc="Welcome to your personalized profile page"
       data={myPosts}
-      handleEdite={handleEdite}
+      handleEdit={handleEdit}
       handleDelete={handleDelete}
     />
   )

@@ -4,7 +4,7 @@ const Profile = ({
   data,
   name,
   desc,
-  handleEdite,
+  handleEdit,
   handleDelete
 }) => {
   return (
@@ -16,7 +16,7 @@ const Profile = ({
             <PromptCard
                 key={post.id}
                 post={post}
-                handleEdite={() => handleEdite && handleEdite(post)}
+                handleEdite={() => handleEdit && handleEdit(post)}
                 handleDelete={() => handleDelete && handleDelete(post)}
 
             />
