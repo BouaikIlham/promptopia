@@ -9,7 +9,6 @@ const UpdatePrompt = () => {
   const router = useRouter();
   const searchParams = useSearchParams();  
   const promptId=  searchParams.get('id')
-  console.log(promptId)
   const [submitting, setIsSubmitting] = useState(false);
   const [post, setPost] = useState({ prompt: "", tag: "" });
 
@@ -27,31 +26,31 @@ const UpdatePrompt = () => {
 
   }, [promptId]);
 
-  console.log(post)
+  const updatePrompt = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
-  // const createPrompt = async (e) => {
-  //   e.preventDefault();
-  //   setIsSubmitting(true);
+    if (!promptId) alert('Prompt ID not found')
+    try {
+      const response = await fetch(`/api/prompt/${promptId}`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({
+          prompt: post.prompt,
+          tag: post.tag
+        })
+      });
 
-  //   try {
-  //     const response = await fetch("/api/prompt/new", {
-  //       method: "POST",
-  //       body: JSON.stringify({
-  //         prompt: post.prompt,
-  //         userId: session?.user.id,
-  //         tag: post.tag,
-  //       }),
-  //     });
+      if(response.ok) {
+        router.push('/')
+      }
 
-  //     if (response.ok) {
-  //       router.push("/");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <Form
@@ -59,7 +58,7 @@ const UpdatePrompt = () => {
       post={post}
       setPost={setPost}
       submitting={submitting}
-      handleSubmit={() => {}}
+      handleSubmit={updatePrompt}
     />
   );
 };
