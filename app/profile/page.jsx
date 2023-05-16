@@ -14,6 +14,21 @@ const MyProfile = () => {
   }
 
   const handleDelete = async (post) => {
+    const hasconfirmed = confirm("Are you sure you want to delete this prompt?!")
+    
+    if(hasconfirmed) {
+      try {
+        await fetch(`/api/prompt/${post._id.toString()}`, {
+          method: 'DELETE'
+        })
+
+        const filteredPosts = myPosts.filter((p) => p._id !== post._id)
+
+        setMyPosts(filteredPosts)
+      } catch(error) {
+        console.log(error)
+      }
+    }
   }
 
   useEffect(() => {
