@@ -46,6 +46,13 @@ const Feed = () => {
     fetchPosts();
   }, []);
 
+  const handletagClick = (tagName) => {
+    setSearchText(tagName)
+
+    const searchResult = filterPrompts(tagName);
+    setSearchedResults(searchResult)
+  }
+
   return (
     <section className="feed">
       <form className="relative w-full flex center">
@@ -60,9 +67,9 @@ const Feed = () => {
       </form>
 
       {searchText ? (
-        <PromptCardList data={searchedResults} handletagClick={() => {}} />
+        <PromptCardList data={searchedResults} handletagClick={handletagClick} />
       ) : (
-        <PromptCardList data={posts} handletagClick={() => {}} />
+        <PromptCardList data={posts} handletagClick={handletagClick} />
       )}
     </section>
   );
