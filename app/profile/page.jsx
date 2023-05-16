@@ -3,11 +3,12 @@ import Profile from "@/components/Profile"
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import EmptyState from "@/components/EmptyState"
 const MyProfile = () => {
   const {data: session} = useSession();
   const [myPosts, setMyPosts] = useState([]);
   const router = useRouter();
- 
+  
 
   const handleEdit =  (post) => {
     router.push(`/update-prompt?id=${post._id}`)
@@ -43,13 +44,21 @@ const MyProfile = () => {
   }, [])
 
   return (
-    <Profile
-      name="My"
-      desc="Welcome to your personalized profile page"
-      data={myPosts}
-      handleEdit={handleEdit}
-      handleDelete={handleDelete}
-    />
+    <div>
+      {session?.user ? (
+          <Profile
+          name="My"
+          desc="Welcome to your personalized profile page"
+          data={myPosts}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+        />
+      ) : 
+      (
+          <EmptyState />
+      )
+      }
+    </div>
   )
 }
 
