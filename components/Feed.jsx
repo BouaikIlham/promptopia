@@ -1,32 +1,55 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from "react"
-import PromptCardList from "./PromptCardList"
-
+import { useState, useEffect } from "react";
+import PromptCardList from "./PromptCardList";
 
 const Feed = () => {
-  const [searchText, setSearchText] = useState('')
-  const [posts, setPosts] = useState([])
+  const [searchText, setSearchText] = useState("");
+  const [searchTimeout, setSearchTimeout] = useState(null);
+  const [posts, setPosts] = useState([]);
 
-
+  const [searchedResults, setSearchedResults] = useState([])
+  // filter prompts 
+  const filterPrompts = (searchText) => {
+    const regex = new RegExp(searchText, "i"); // 'i' flag for case-insensitive search
+    return posts.filter(
+      (post) =>
+        regex.test(post.prompt) ||
+        regex.test(post.tag) ||
+        regex.test(post.creator.username)
+    );
+  };
+  // search function
   const handleSearchChange = (e) => {
+    clearTimeout(searchTimeout)
+    setSearchText(e.target.value);
 
-  }
+    // debounce method
+    setSearchTimeout(
+      setTimeout(() => {
+        const searchResult = filterPrompts(e.target.value);
+        setSearchedResults(searchResult)
+      }, 500)
+    )
+    
+    
+  };
+
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch('/api/prompt')
+      const response = await fetch("/api/prompt");
       const data = await response.json();
-      setPosts(data)
-    }
+      setPosts(data);
+    };
 
     fetchPosts();
-  }, [])
+  }, []);
 
   return (
     <section className="feed">
       <form className="relative w-full flex center">
-        <input 
+        <input
           className="search_input peer"
           type="text"
           placeholder="Search for a tag or username"
@@ -36,12 +59,13 @@ const Feed = () => {
         />
       </form>
 
-      <PromptCardList
-        data={posts}
-        handletagClick={() => {}}
-      />
+      {searchText ? (
+        <PromptCardList data={searchedResults} handletagClick={() => {}} />
+      ) : (
+        <PromptCardList data={posts} handletagClick={() => {}} />
+      )}
     </section>
-  )
-}
+  );
+};
 
-export default Feed
+export default Feed;
