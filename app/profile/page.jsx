@@ -27,7 +27,6 @@ const MyProfile = () => {
     if(session?.user.id) fetchPosts();
    
   }, [])
- console.log(myPosts)
 
   return (
     <Profile
